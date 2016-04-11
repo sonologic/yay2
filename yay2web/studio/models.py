@@ -1,5 +1,8 @@
 from django.db import models
 from django.core.exceptions import ValidationError
+from alsaaudio import cards,pcms
+
+# helper functions
 
 def validate_only_one_instance(obj):
     model = obj.__class__
@@ -37,4 +40,7 @@ class Source(models.Model):
 
     class Meta:
         abstract = True
+
+class SourceAlsa(Source):
+    alsa_device = models.CharField(max_length=1024)
 
