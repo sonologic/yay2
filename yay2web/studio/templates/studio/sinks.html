@@ -1,0 +1,23 @@
+{% extends "yay2/skel.html" %}
+
+{% block title %}Sinks{% endblock %}
+
+{% block content %}
+<div id="sinks" class="overview">
+    <h3>Sinks</h3>
+    <table>
+        <tr>
+            <th>name</th>
+            <th>type</th>
+            <th>details</th>
+        </tr>
+    {% for sink in sinks|dictsortreversed:"name" %}
+        <tr>
+            <td><a href="">{{ source.name }}</td>
+            <td><a href="">{{ source.type }}</td>
+            <td><a href="">{{ source.details }}</td>
+        </tr>
+    {% endfor %}
+    </table>
+</div>
+{% endblock %}

@@ -2,14 +2,37 @@
 <html lang="en">
 <head>
     {% load staticfiles %}
-    <!-- link rel="stylesheet" href="style.css" -->
+    <link rel="stylesheet" href="{% static "css/style.css" %}"/>
     <title>YAY2: {% block title %}...{% endblock %}</title>
     <script src="{% static "js/jquery-2.2.3.min.js" %}"></script>
     <script src="{% static "js/yay2.js" %}"></script>
 </head>
 <body>
     <div id="content">
+        <div id="header">
+            <h2>{{ station_name }}</h2>
+        </div>
+        <div id="globalstatus">
+            <div class="clock" id="studiotime">
+                <div class="time"></div>
+                <div class="timezone"></div>
+                <div class="date"></div>
+                <div class="label">Studio</div>
+            </div>
+            <div class="timer" id="lastupdated">
+                <div class="value"></div>
+            </div>
+            <div class="clock" id="localtime">
+                <div class="time"></div>
+                <div class="timezone"></div>
+                <div class="date"></div>
+                <div class="label">Local</div>
+            </div>
+        </div>
+
+        <div id="content">
         {% block content %}{% endblock %}
+        </div>
     </div>
 </body>
 </html>

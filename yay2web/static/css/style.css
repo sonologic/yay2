@@ -1,0 +1,64 @@
+#header {
+    border: 1px solid #eee;
+    display: inline-flex;
+    flex-direction: row;
+    margin: 0 auto;
+}
+
+#globalstatus {
+    display: inline-flex;
+    flex-direction: row;
+}
+
+.clock {
+    display: flex;
+    flex-direction: column;
+}
+
+#studiotime {
+    border: 1px solid black;
+    width: 25em;
+}
+
+#studiotime div {
+    flex-direction: column;
+}
+
+#localtime {
+    border: 1px solid black;
+    width: 25em;
+}
+
+#lastupdated {
+    text-align: center;
+    border: 1px solid #888;
+    width: 6em;
+    display: inline-flex;
+}
+
+#lastupdated .value {
+    margin: auto auto;
+    color: #ddd;
+}
+#lastupdated .value:hover {
+    color: #000;
+} 
+
+.clock .time {
+    font-size: 2em;
+    margin: 0 auto;
+}
+
+.clock .timezone {
+    font-size: 0.8em;
+    color: #888;
+    margin: -0.5em auto 0 auto;
+}
+
+.clock .date {
+    margin: 0.2em auto 0.4em auto;
+}
+
+.clock .label {
+    margin: -0.2em auto;
+}

@@ -1,6 +1,6 @@
 var statusUpdateTimer;
 var deltaTime = 0;
-var statusUpdateCounter = 0;
+var statusUpdateCounter = 49;
 var lastStatusUpdate = 0;
 
 function statusUpdate() {
@@ -19,28 +19,45 @@ function statusUpdate() {
             deltaTime = studioTime - localTime;
             console.log("deltaTime: "+deltaTime);
 
-            $("#studiotime").html(studioTime.toString());
-            $("#localtime").html(localTime.toString());
-            $("#lastupdated").html("0");
+            $("#studiotime .time").html(studioTime.toTimeString().substr(0,8));
+            $("#studiotime .timezone").html(studioTime.toTimeString().substr(9));
+            $("#studiotime .date").html(studioTime.toDateString());
+
+            $("#localtime .time").html(localTime.toTimeString().substr(0,8));
+            $("#localtime .timezone").html(localTime.toTimeString().substr(9));
+            $("#localtime .date").html(localTime.toDateString());
+
+            $("#lastupdated .value").html("0");
 
             lastStatusUpdate = localTime.valueOf();
         }); 
     } else {
             localTime = new Date();
-            studioTimeStr = "-";
-            last = "-";
 
             if(lastStatusUpdate!=0) {
                 studioTime = new Date(localTime.valueOf() + deltaTime);
-                studioTimeStr = studioTime.toString();
                 last = localTime.valueOf() - lastStatusUpdate;
+
+                $("#studiotime .time").html(studioTime.toTimeString().substr(0,8));
+                $("#studiotime .timezone").html(studioTime.toTimeString().substr(9));
+                $("#studiotime .date").html(studioTime.toDateString());
+
+                $("#localtime .time").html(localTime.toTimeString().substr(0,8));
+                $("#localtime .timezone").html(localTime.toTimeString().substr(9));
+                $("#localtime .date").html(localTime.toDateString());
+
+                $("#lastupdated .value").html(last);
+            } else {
+                $("#studiotime .time").html("-");
+                $("#studiotime .timezone").html("-");
+                $("#studiotime .date").html("-");
+
+                $("#localtime .time").html(localTime.toTimeString().substr(0,8));
+                $("#localtime .timezone").html(localTime.toTimeString().substr(9));
+                $("#localtime .date").html(localTime.toDateString());
+
+                $("#lastupdated .value").html("-");
             }
-
-            $("#lastupdated").html(last);
-            $("#studiotime").html(studioTimeStr);
-            $("#localtime").html(localTime.toString());
-
-            
     }
 
     setTimeout(statusUpdate, 100);
