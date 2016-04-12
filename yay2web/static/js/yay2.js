@@ -1,3 +1,6 @@
+
+// status update related
+
 var statusUpdateTimer;
 var deltaTime = 0;
 var statusUpdateCounter = 49;
@@ -60,11 +63,55 @@ function statusUpdate() {
             }
     }
 
-    setTimeout(statusUpdate, 100);
+    statusUpdateTimer = setTimeout(statusUpdate, 100);
+}
+
+// logfile related
+
+var logfile_id;
+var logfile_interval = 3000;
+var logfile_timer;
+var logfile_lastseen=-2;
+var logfile_maxentries=120;
+
+function updateLog() {
+    clearTimeout(logfile_timer);
+
+    $.getJSON('/studio/logentries/'+logfile_id+'/'+(logfile_lastseen+1), function(response) {
+        for(var idx in response) {
+            entry = response[idx];
+
+            $("#logfileentries").append('<div class="logentry">' +
+                                        '<span class="id">' + entry.id + '</span> ' +
+                                        '<span class="datetime">' + entry.datetime + '</span> ' +
+                                        '<span class="message">' + entry.message + '</span></div>');
+
+            if(entry.id>logfile_lastseen)
+                logfile_lastseen = entry.id;
+        }
+
+        entries = $("#logfileentries div");
+        n_entries = entries.length;
+
+        if(n_entries>logfile_maxentries) {
+            entries.slice(0, n_entries-logfile_maxentries).remove();
+        }
+
+        $("#logfileentries").animate({ scrollTop: $('#logfileentries').prop("scrollHeight")}, 1000);
+    });
+
+    logfile_timer = setTimeout(updateLog, logfile_interval);
 }
 
 $(document).ready(function() {
+    if($("#globalstatus").length == 1) {
+        statusUpdate();
+    }
 
-    statusUpdate();
-
+    // activate logentry fetcher if logfileentries node is present
+    if($("#logfileentries").length == 1) {
+        logfile_id = $("#logfileentries").attr("data-logfile");
+        console.log("logfile: "+logfile_id);
+        updateLog();
+    }
 });

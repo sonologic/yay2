@@ -62,3 +62,10 @@
 .clock .label {
     margin: -0.2em auto;
 }
+
+
+#logfileentries {
+    width: 80%;
+    height: 20em;
+    overflow: scroll;
+}

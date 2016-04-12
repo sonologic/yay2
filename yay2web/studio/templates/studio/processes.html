@@ -1,0 +1,25 @@
+{% extends "yay2/skel.html" %}
+
+{% block title %}Studio Dashboard{% endblock %}
+
+{% block content %}
+<div id="Processes" class="overview">
+    <h3>Processes</h3>
+    <table>
+        <tr>
+            <th>started at</th>
+            <th>name</th>
+            <th>pid</th>
+            <th>logfile</th>
+        </tr>
+    {% for process in processes|dictsortreversed:"name" %}
+        <tr>
+            <td><a href="{% url 'logfile' process.logfile.id %}">{{ process.started_at }}</a></td>
+            <td><a href="{% url 'logfile' process.logfile.id %}">{{ process.name }}</a></td>
+            <td><a href="{% url 'logfile' process.logfile.id %}">{{ process.pid }}</a></td>
+            <td><a href="{% url 'logfile' process.logfile.id %}">logfile</a></td>
+        </tr>
+    {% endfor %}
+    </table>
+</div>
+{% endblock %}

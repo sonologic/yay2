@@ -1,0 +1,19 @@
+{% extends "yay2/skel.html" %}
+
+{% block title %}Studio Dashboard{% endblock %}
+
+{% block content %}
+<div id="logfiles" class="overview">
+    <h3>Logfiles</h3>
+    <table>
+        <tr>
+            <th>name</th>
+        </tr>
+    {% for logfile in logfiles|dictsortreversed:"name" %}
+        <tr>
+            <td><a href="{% url 'logfile' logfile.id %}">{{ logfile.name }}</td>
+        </tr>
+    {% endfor %}
+    </table>
+</div>
+{% endblock %}
