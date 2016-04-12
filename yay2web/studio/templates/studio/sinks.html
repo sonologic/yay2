@@ -13,9 +13,9 @@
         </tr>
     {% for sink in sinks|dictsortreversed:"name" %}
         <tr>
-            <td><a href="">{{ sink.name }}</td>
-            <td><a href="">{{ sink.type }}</td>
-            <td><a href="">{{ sink.details }}</td>
+            <td><a href="{{ sink.detail_url }}">{{ sink.name }}</td>
+            <td><a href="{{ sink.detail_url }}">{{ sink.type }}</td>
+            <td><a href="{{ sink.detail_url }}">{{ sink.details }}</td>
         </tr>
     {% endfor %}
     </table>

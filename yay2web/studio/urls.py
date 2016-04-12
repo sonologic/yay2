@@ -7,6 +7,7 @@ urlpatterns = [
     url(r'^$', views.index, name='dashboard'),
     url(r'^sources/?$', views.sources, name='sources'),
     url(r'^source/alsa/([0-9]+)/?$', views.source_alsa, name='source_alsa'),
+    url(r'^sink/icecast/([0-9]+)/?$', views.sink_icecast, name='sink_icecast'),
     url(r'^sinks/?$', views.sinks, name='sinks'),
     url(r'^processes/?$', views.processes, name='processes'),
     url(r'^logfiles/?$', views.logfiles, name='logfiles'),
@@ -14,7 +15,7 @@ urlpatterns = [
     # json views:
     url(r'^status/?$', views.status, name='status'),
     url(r'^cards/?$', views.cards, name='cards'),
-    url(r'^pcms/?$', views.pcms, name='pcms'),
+    url(r'^pcms(/capture|/playback)?/?$', views.pcms, name='pcms'),
     url(r'^liquidsoap/?$', views.liquidsoap, name='liquidsoap'),
     url(r'^logentries/([0-9]+)/(-?[0-9]+)/?$', views.logentries, name='logentries'),
 ]

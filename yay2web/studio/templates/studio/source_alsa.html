@@ -1,0 +1,14 @@
+{% extends "yay2/skel.html" %}
+
+{% block title %}Source {{ source_id }}{% endblock %}
+
+{% block content %}
+<div id="source_alsa" class="overview">
+source.id: {{ source.id }}
+<form action="{% url 'source_alsa' source.id %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
+{{ form.as_p }}
+<input type="submit" value="Submit" />
+</form>
+
+</div>
+{% endblock %}

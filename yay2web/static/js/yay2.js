@@ -114,4 +114,23 @@ $(document).ready(function() {
         console.log("logfile: "+logfile_id);
         updateLog();
     }
+
+    if($("#source_alsa").length == 1) {
+        $.getJSON('/studio/pcms/capture', function(response) {
+            value = $("#id_alsa_device").attr('value');
+            id = $("#id_alsa_device").attr('id');
+            name = $("#id_alsa_device").attr('name');
+
+            select_input  = '<select name="'+name+'" id="'+id+'">';
+            for(var idx in response) {
+                select_input += '<option value="' + response[idx] + '"';
+                if(response[idx]==value) {
+                    select_input += ' selected';
+                }
+                select_input += '>' + response[idx] + '</option>';
+            }
+            select_input += '</select>';
+            $("#id_alsa_device").replaceWith(select_input);
+        });
+    }
 });

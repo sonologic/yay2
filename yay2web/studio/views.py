@@ -1,9 +1,14 @@
 from time import time
+
+from django.contrib import messages
+from django.core.urlresolvers import reverse
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
 import json
 import alsaaudio
+
+from studio.forms import SourceAlsaForm, SinkIcecastForm
 from .models import SourceAlsa, Configuration, SinkIcecast, SourceFallback, Logfile, LogfileEntry, BackgroundProcess
 from yay2web.utils import generate_liquidsoap_config
 
@@ -26,6 +31,7 @@ def sources(request):
     for source in alsa_sources:
         source.type = "alsa"
         source.details = source.alsa_device
+        source.detail_url = reverse('source_alsa', args=[source.id])
         sources += [source]
 
     fallback_sources = SourceFallback.objects.all()
@@ -33,6 +39,7 @@ def sources(request):
     for source in fallback_sources:
         source.type = "fallback"
         source.details = source.list_sources()
+        #source.detail_url = reverse('source_fallback', args=[source.id])
         sources += [source]
 
     context = RequestContext(request, {
@@ -44,10 +51,21 @@ def sources(request):
 def source_alsa(request, source_id):
     source = SourceAlsa.objects.get(pk=source_id)
 
+    if request.method == "POST":
+        form = SourceAlsaForm(request.POST, instance=source)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Source info updated successfully")
+            return HttpResponseRedirect(reverse('source_alsa', args=[source_id]))
+    else:
+        form = SourceAlsaForm(instance=source)
+
     context = RequestContext(request, {
-        'source_id' : source_id,
+        'source' : source,
+        'form' : form,
     })
-    return render(request, 'studio/source.html', context)
+
+    return render(request, 'studio/source_alsa.html', context)
 
 @login_required
 def sinks(request):
@@ -56,12 +74,33 @@ def sinks(request):
     for sink in sinks:
         sink.type = "icecast"
         sink.details = sink.server + ":" + str(sink.port) + "/" + sink.mount
+        sink.detail_url = reverse('sink_icecast', args=[sink.id])
 
     context = RequestContext(request, {
         'sinks' : sinks,
     })
     return render(request, 'studio/sinks.html', context)
-    
+
+@login_required
+def sink_icecast(request, sink_id):
+    sink = SinkIcecast.objects.get(pk=sink_id)
+
+    if request.method == "POST":
+        form = SinkIcecastForm(request.POST, instance=sink)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Sink info updated successfully")
+            return HttpResponseRedirect(reverse('sink_icecast', args=[sink_id]))
+    else:
+        form = SinkIcecastForm(instance=sink)
+
+    context = RequestContext(request, {
+        'sink' : sink,
+        'form' : form,
+    })
+
+    return render(request, 'studio/sink_icecast.html', context)
+
 #@login_required
 #def config_sink_icecast(request):
 #    context = {}
@@ -109,8 +148,14 @@ def cards(request):
     return HttpResponse(json.dumps(data), content_type="application/json")
 
 @login_required
-def pcms(request):
+def pcms(request, filter):
     data = alsaaudio.pcms()
+
+    if filter=='/capture':
+        data = alsaaudio.pcms(alsaaudio.PCM_CAPTURE)
+    elif filter=='/playback':
+        data = alsaaudio.pcms(alsaaudio.PCM_PLAYBACK)
+
     return HttpResponse(json.dumps(data), content_type="application/json")
 
 # liquidsoap config

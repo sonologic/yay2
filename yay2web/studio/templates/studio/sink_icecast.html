@@ -1,0 +1,14 @@
+{% extends "yay2/skel.html" %}
+
+{% block title %}Sink {{ sink.name }}{% endblock %}
+
+{% block content %}
+<div id="sink_icecast" class="overview">
+sink.id: {{ sink.id }}
+<form action="{% url 'sink_icecast' sink.id %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
+{{ form.as_p }}
+<input type="submit" value="Submit" />
+</form>
+
+</div>
+{% endblock %}

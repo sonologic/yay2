@@ -13,9 +13,9 @@
         </tr>
     {% for source in sources|dictsortreversed:"name" %}
         <tr>
-            <td><a href="">{{ source.name }}</td>
-            <td><a href="">{{ source.type }}</td>
-            <td><a href="">{{ source.details }}</td>
+            <td><a href="{{ source.detail_url }}">{{ source.name }}</td>
+            <td><a href="{{ source.detail_url }}">{{ source.type }}</td>
+            <td><a href="{{ source.detail_url }}">{{ source.details }}</td>
         </tr>
     {% endfor %}
     </table>
