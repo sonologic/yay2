@@ -30,10 +30,10 @@ class LogfileEntry(models.Model):
 class Configuration(models.Model):
     station_name = models.CharField(max_length=1024)
     telnet_port = models.IntegerField(default=1236)
-    log_path = models.CharField(max_length="2048",default="/tmp")
-    mount_path = models.CharField(max_length="2048",default="/mnt")
-    playlist_path = models.CharField(max_length="2048",default="/home/yay2/playlists")
-    cmd_path = models.CharField(max_length="2048",default="/home/yay2/run")
+    log_path = models.CharField(max_length=2048,default="/tmp")
+    mount_path = models.CharField(max_length=2048,default="/mnt")
+    playlist_path = models.CharField(max_length=2048,default="/home/yay2/playlists")
+    cmd_path = models.CharField(max_length=2048,default="/home/yay2/run")
 
     def clean(self):
         validate_only_one_instance(self)

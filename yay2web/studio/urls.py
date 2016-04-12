@@ -4,7 +4,7 @@ from . import views
 
 urlpatterns = [
     # html views:
-    url(r'^/?$', views.index, name='dashboard'),
+    url(r'^$', views.index, name='dashboard'),
     url(r'^sources/?$', views.sources, name='sources'),
     url(r'^source/alsa/([0-9]+)/?$', views.source_alsa, name='source_alsa'),
     url(r'^sinks/?$', views.sinks, name='sinks'),
