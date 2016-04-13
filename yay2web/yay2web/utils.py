@@ -36,6 +36,9 @@ def generate_liquidsoap_config():
 set("log.file.path","{2}.log")
 set("server.telnet.port",1236)
 set("server.telnet",true)
+set("init.daemon",true)
+set("init.daemon.pidfile",true)
+set("init.daemon.pidfile.path","{3}.pid")
 
 # as a last-resort fallback, emit a 440hz continuous tone
 sine = sine()
@@ -43,8 +46,9 @@ sine = sine()
 '''.format(
     config.station_name,
     config.telnet_port,
-    os.path.join(config.log_path, string_to_filename(config.station_name))
-)
+    os.path.join(config.log_path, string_to_filename(config.station_name)),
+    os.path.join(config.cmd_path, string_to_filename(config.station_name)),
+    )
 
     # output alsa sources
     sources = SourceAlsa.objects.all()

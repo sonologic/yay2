@@ -1,13 +1,12 @@
 #header {
     border: 1px solid #eee;
-    display: inline-flex;
-    flex-direction: row;
-    margin: 0 auto;
+    text-align: center;
 }
 
 #globalstatus {
     display: inline-flex;
     flex-direction: row;
+    margin: auto;
 }
 
 .clock {

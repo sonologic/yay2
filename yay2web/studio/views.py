@@ -49,14 +49,12 @@ def sources(request):
 
 @login_required
 def source_alsa(request, source_id):
-    source = SourceAlsa.objects.get(pk=source_id)
 
     if request.method == "POST":
         form = SourceAlsaForm(request.POST, instance=source)
         if form.is_valid():
             form.save()
             messages.success(request, "Source info updated successfully")
-            return HttpResponseRedirect(reverse('source_alsa', args=[source_id]))
     else:
         form = SourceAlsaForm(instance=source)
 
@@ -133,6 +131,30 @@ def processes(request):
         'processes' : processes,
     })
     return render(request, 'studio/processes.html', context)
+
+@login_required
+def start(request, process_id):
+    p = BackgroundProcess.objects.get(id=process_id)
+    if not p.running and not p.terminate:
+        messages.success(request, "process {0} started".format(p.name))
+        p.start = True
+        p.save()
+    else:
+        messages.success(request, "process {0} can not be started".format(p.name))
+    return HttpResponseRedirect(reverse('processes'))
+
+
+@login_required
+def terminate(request, process_id):
+    p = BackgroundProcess.objects.get(id=process_id)
+    if p.running and not p.terminate:
+        messages.success(request, "process {0} terminating".format(p.name))
+        p.terminate = True
+        p.save()
+    else:
+        messages.error(request, "process {0} can not be terminated".format(p.name))
+    return HttpResponseRedirect(reverse('processes'))
+
 # json views (todo, split to api ap)
 
 @login_required
@@ -159,6 +181,7 @@ def pcms(request, filter):
     return HttpResponse(json.dumps(data), content_type="application/json")
 
 # liquidsoap config
+
 
 @login_required
 def liquidsoap(request):

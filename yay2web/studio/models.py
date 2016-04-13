@@ -39,10 +39,14 @@ class Configuration(models.Model):
         validate_only_one_instance(self)
 
 class BackgroundProcess(models.Model):
-    name = models.CharField(max_length=128)
+    name = models.CharField(max_length=128, unique=True)
     logfile = models.ForeignKey(Logfile)
     pid = models.IntegerField(null=True)
     started_at = models.DateTimeField(default=timezone.now)
+    stopped_at = models.DateTimeField(null=True)
+    running = models.BooleanField(default=False)
+    terminate = models.BooleanField(default=False)
+    start = models.BooleanField(default=False)
             
 # sinks
             
