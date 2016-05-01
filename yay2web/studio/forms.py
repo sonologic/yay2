@@ -1,6 +1,12 @@
-from django.forms import ModelForm, CharField, PasswordInput
+from django.forms import ModelForm, CharField, PasswordInput, Form
 from studio.models import SourceAlsa, SinkIcecast
 
+class LoginForm(Form):
+    username = CharField(max_length=30)
+    password = CharField(max_length=128, widget=PasswordInput())
+
+    def clean(self):
+        cleaned_data = super(LoginForm, self).clean()
 
 class SourceAlsaForm(ModelForm):
     class Meta:

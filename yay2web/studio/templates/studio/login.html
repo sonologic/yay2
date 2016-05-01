@@ -1,0 +1,20 @@
+{% extends "yay2/base.html" %}
+
+{% block title %}Log-in{% endblock %}
+
+{% block content %}
+<div id="login">
+  <form action="{% url 'login' %}?next={{ next }}" method="post">{% csrf_token %}
+{% for field in form %}
+     <div class="fieldWrapper" style="display: inline;">
+        {{ field.errors }}
+        {{ field.label_tag }} {{ field }}
+        {% if field.help_text %}
+        <p class="help">{{ field.help_text|safe }}</p>
+        {% endif %}
+      </div>
+{% endfor %}
+      <input type="submit" value="Login" />
+  </form>
+</div>
+{% endblock %}

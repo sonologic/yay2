@@ -5,6 +5,7 @@ from . import views
 urlpatterns = [
     # html views:
     url(r'^$', views.index, name='dashboard'),
+    url(r'^login/?$', views.log_in, name='login'),
     url(r'^sources/?$', views.sources, name='sources'),
     url(r'^source/alsa/(-?[0-9]+)/?$', views.source_alsa, name='source_alsa'),
     url(r'^sink/icecast/([0-9]+)/?$', views.sink_icecast, name='sink_icecast'),

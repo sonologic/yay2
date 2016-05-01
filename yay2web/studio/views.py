@@ -5,16 +5,60 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
+from django.contrib.auth import authenticate, login, logout, REDIRECT_FIELD_NAME
+from django.utils.http import is_safe_url
 import json
 import alsaaudio
 
 from studio.forms import SourceAlsaForm, SinkIcecastForm
 from .models import SourceAlsa, Configuration, SinkIcecast, SourceFallback, Logfile, LogfileEntry, BackgroundProcess
+from .forms import LoginForm
 from yay2web.utils import generate_liquidsoap_config
 
 from django.contrib.auth.decorators import login_required
 
 # html views
+
+def welcome(request):
+    return render(request, 'welcome.html', {})
+
+def log_in(request, redirect_field_name=REDIRECT_FIELD_NAME):
+    redirect_to = request.POST.get(redirect_field_name, request.GET.get(redirect_field_name, ''))
+
+    if request.method == "POST":
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(username=username, password=password)
+            if user != None:
+                if user.is_active:
+                    login(request, user)
+
+                    if not is_safe_url(url=redirect_to, host=request.get_host()):
+                        redirect_to = reverse('dashboard')
+                    return HttpResponseRedirect(redirect_to)
+
+                else:
+                    messages.error(request, "Account is inactive")
+            else:
+                messages.error(request, "Invalid username or password")
+        else:
+            messages.error(request, "Invalid username or password")
+        return HttpResponseRedirect(request.get_full_path())
+    else:
+        context = RequestContext(request, {
+            'next'  : redirect_to,
+            'form'  : LoginForm(),
+        })
+        return render(request, 'studio/login.html', context)
+            
+    return HttpResponseRedirect(reverse('login'))
+
+def log_off(request):
+    logout(request)
+    return HttpResponseRedirect(reverse('login'))
+
 
 @login_required
 def index(request):
@@ -49,6 +93,7 @@ def sources(request):
 
 @login_required
 def source_alsa(request, source_id):
+    source = SourceAlsa.objects.get(pk=source_id)
 
     if request.method == "POST":
         form = SourceAlsaForm(request.POST, instance=source)

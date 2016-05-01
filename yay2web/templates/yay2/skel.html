@@ -1,17 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    {% load staticfiles %}
-    <link rel="stylesheet" href="{% static "css/style.css" %}"/>
-    <title>YAY2: {% block title %}...{% endblock %}</title>
-    <script src="{% static "js/jquery-2.2.3.min.js" %}"></script>
-    <script src="{% static "js/yay2.js" %}"></script>
-</head>
-<body>
-    <div id="content">
-        <div id="header">
-            <h2>{{ station_name }}</h2>
-        </div>
+{% extends "yay2/base.html" %}
+
+{% block header %}
         <div id="globalstatus">
             <div class="clock" id="studiotime">
                 <div class="time"></div>
@@ -35,18 +24,4 @@
             <a href="{% url 'processes' %}">processes</a>
             <a href="{% url 'logfiles' %}">logfiles</a>
         </div>
-        <div id="messages">
-        {% if messages %}
-            <ul class="messages">
-                {% for message in messages %}
-                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-        </div>
-        <div id="content">
-        {% block content %}{% endblock %}
-        </div>
-    </div>
-</body>
-</html>
+{% endblock %}
