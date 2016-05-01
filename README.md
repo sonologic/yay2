@@ -16,3 +16,16 @@ into the stream, or both.
 Audio capturing can be set up on an internal audio device or any
 usb audio device supported by Linux.
 
+Running
+=======
+
+Install dependencies:
+
+django >= 1.9
+...
+
+$ git submodule update --init
+
+$ cd yay2web
+$ ./runserver.py
+
